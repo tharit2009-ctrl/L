@@ -81,7 +81,7 @@ function limbFrame(g, x, y, len, angle, width, trim, back = false) {
 function bakeNinjaFrame(ch, src, q) {
   const canvas = document.createElement('canvas'); canvas.width = 96; canvas.height = 128;
   const g = canvas.getContext('2d'), trim = ch.trim;
-  g.save(); g.translate(48 + q.lean, q.bob);
+  g.save(); g.translate(q.lean, q.bob);
   if (q.tilt) { g.translate(48, 72); g.rotate(q.tilt); g.translate(-48, -72); }
   g.lineCap = 'round'; g.strokeStyle = '#090d17'; g.lineWidth = 7; g.beginPath(); g.moveTo(66, 72); g.lineTo(80, 39); g.stroke();
   g.strokeStyle = '#697887'; g.lineWidth = 2; g.beginPath(); g.moveTo(67, 70); g.lineTo(79, 42); g.stroke();
