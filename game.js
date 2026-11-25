@@ -1,7 +1,7 @@
-/* NK NINJA STEAM GAME — 2D chibi ninja side-scrolling platformer (Canvas 2D, 960x540 logical) */
+/* PLANET RUNNER — 2D astronaut auto-runner (Canvas 2D, 960x540 logical) */
 (() => {
 'use strict';
-const W = 960, H = 540, GRAV = 2000, GY = 470;
+const W = 960, H = 540, GRAV = 1600, GY = 470;
 const cv = document.getElementById('game'), cx = cv.getContext('2d'), ov = document.getElementById('ov');
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const AS = 'assets/';
@@ -9,19 +9,19 @@ const COL = { navy: '#081020', mid: '#0B1830', cyan: '#00E5FF', green: '#00FF90'
 
 /* ---------- data ---------- */
 const CH = [
-  { id: 'ninja01', name: 'SHADOW BLADE', role: 'Balanced melee', spd: 1, jmp: 1, en: 1, dash: 1 },
-  { id: 'ninja02', name: 'CYBER SAGE', role: 'Energy regen +50%', spd: .95, jmp: 1, en: 1.5, dash: 1 },
-  { id: 'ninja03', name: 'STORM EDGE', role: 'Faster run & dash', spd: 1.12, jmp: 1.05, en: 1, dash: 1.3 }];
+  { id: 'ninja01', name: 'COMMANDER NOVA', role: 'Balanced astronaut', spd: 1, jmp: 1, en: 1, dash: 1 },
+  { id: 'ninja02', name: 'DR. ORBIT', role: 'Oxygen regen +50%', spd: .95, jmp: 1, en: 1.5, dash: 1 },
+  { id: 'ninja03', name: 'PILOT COMET', role: 'Faster run & boost', spd: 1.12, jmp: 1.05, en: 1, dash: 1.3 }];
 const LV = [
-  { name: 'NINJA ACADEMY', sub: 'Introduction to STEAM', len: 4200, kind: 'sakura', sky: ['#0B1830', '#2a1a52'], acc: '#ff8fc7', boss: 'GATE GUARDIAN',
-    qs: [{ tag: 'SCIENCE', q: 'What force pulls a jumping ninja back to the ground?', a: ['Gravity', 'Color', 'Sound', 'Light'], h: 'Think about the force pulling objects downward.' },
+  { name: 'MOON BASE', sub: 'Introduction to STEAM', len: 4200, kind: 'sakura', sky: ['#05070f', '#1a1240'], acc: '#ff8fc7', boss: 'LUNAR SENTINEL',
+    qs: [{ tag: 'SCIENCE', q: 'What force pulls a jumping astronaut back to the ground?', a: ['Gravity', 'Color', 'Sound', 'Light'], h: 'Think about the force pulling objects downward.' },
          { tag: 'TECHNOLOGY', q: 'Which part lets a robot sense how far an object is?', a: ['Distance sensor', 'Speaker', 'Paint', 'Label'], h: 'Sensors collect data from the world.' },
-         { tag: 'MATHEMATICS', q: 'A ninja runs 3 m/s for 4 seconds. How far?', a: ['12 m', '7 m', '9 m', '1 m'], h: 'Distance = speed × time.' }] },
-  { name: 'SCIENCE FOREST', sub: 'Motion · Energy · Physics', len: 4400, kind: 'forest', sky: ['#04201c', '#0a2a3a'], acc: '#00FF90', boss: 'FOREST GOLEM',
-    qs: [{ tag: 'SCIENCE', q: 'A shuriken keeps flying straight until a force acts on it. This is…', a: ['Inertia', 'Condensation', 'Magnetism', 'Erosion'], h: 'Objects resist changes in motion.' },
-         { tag: 'SCIENCE', q: 'At the top of a cliff, a ninja has the most…', a: ['Potential energy', 'Sound energy', 'Nuclear energy', 'Color energy'], h: 'Height stores energy because of gravity.' },
+         { tag: 'MATHEMATICS', q: 'An astronaut runs 3 m/s for 4 seconds. How far?', a: ['12 m', '7 m', '9 m', '1 m'], h: 'Distance = speed × time.' }] },
+  { name: 'MARS CANYON', sub: 'Motion · Energy · Physics', len: 4400, kind: 'forest', sky: ['#1a0808', '#3a1410'], acc: '#ff7a45', boss: 'DUST GOLEM',
+    qs: [{ tag: 'SCIENCE', q: 'A space probe keeps flying straight until a force acts on it. This is…', a: ['Inertia', 'Condensation', 'Magnetism', 'Erosion'], h: 'Objects resist changes in motion.' },
+         { tag: 'SCIENCE', q: 'At the top of a cliff, an astronaut has the most…', a: ['Potential energy', 'Sound energy', 'Nuclear energy', 'Color energy'], h: 'Height stores energy because of gravity.' },
          { tag: 'ENGINEERING', q: 'Which shape makes a bridge frame rigid and strong?', a: ['Triangles', 'Loose ropes', 'Unbraced squares', 'Circles'], h: 'Engineers brace structures with this shape.' }] },
-  { name: 'TECHNOLOGY LAB', sub: 'Coding · Sensors · Data', len: 4600, kind: 'lab', sky: ['#06142c', '#0b2a4a'], acc: '#00E5FF', boss: 'CYBER GUARDIAN',
+  { name: 'SPACE STATION', sub: 'Coding · Sensors · Data', len: 4600, kind: 'lab', sky: ['#06142c', '#0b2a4a'], acc: '#00E5FF', boss: 'ROGUE ROBOT',
     qs: [{ tag: 'TECHNOLOGY', q: 'Binary 101 equals which decimal number?', a: ['5', '3', '6', '10'], h: 'Place values: 4 + 0 + 1.' },
          { tag: 'ARTS', q: 'Which pair gives the strongest contrast for a game HUD?', a: ['Cyan on dark navy', 'Navy on dark blue', 'Gray on gray', 'Green on green'], h: 'Contrast = big difference in brightness.' },
          { tag: 'MATHEMATICS', q: 'Ignoring air, which launch angle gives the longest range?', a: ['45°', '0°', '90°', '10°'], h: 'Halfway between flat and straight up.' }] }];
@@ -136,7 +136,7 @@ function update(dt) {
   for (const k of ['atk', 'acd', 'spin', 'dash', 'dcd', 'tcd', 'inv', 'hurt', 'land']) if (p[k] > 0) p[k] -= dt;
   if (p.ko) { p.ko += dt; p.vy += GRAV * dt; p.y += p.vy * dt; if (p.y > H + 100) p.y = H + 100; if (p.ko > 1.2) over(); return; }
   if (s.won) { p.vx = 0; return; }
-  const dir = (down.right ? 1 : 0) - (down.left ? 1 : 0);
+  const dir = 1;
   if (hit.dash && p.dcd <= 0 && p.dash <= 0) { p.dash = .18; p.dcd = .6; p.inv = Math.max(p.inv, .22); SFX.dash(); burst(p.x + 17, p.y + 60, COL.cyan, 6, 120); }
   if (p.dash > 0) { p.vx = p.face * 720 * ch.dash; p.vy = 0; }
   else if (p.hurt <= 0) { p.vx = dir * 270 * ch.spd * (p.spin > 0 ? .55 : 1); if (dir) p.face = dir; } else p.vx *= .92;
@@ -191,7 +191,7 @@ function update(dt) {
     else if (c.t === 'heart') { p.hp = Math.min(100, p.hp + 25); SFX.pick(); say('+25 HP', c.x, c.y - 10, COL.red); }
     else { p.en = Math.min(100, p.en + 40); SFX.pick(); say('+ENERGY', c.x, c.y - 10, COL.green); }
   }
-  if (s.bossDead && Math.abs(p.x + 17 - (s.len - 110)) < 50 && !s.won) win();
+  if (s.bossDead && p.x + 17 > s.len - 160 && !s.won) win();
   s.cam = clamp(p.x - 360, 0, s.len - W);
 }
 function tickFx(dt) {
@@ -283,10 +283,10 @@ function panel(h) { ov.innerHTML = `<div class="panel">${h}</div>`; ov.classList
 function hide() { ov.innerHTML = ''; ov.classList.remove('on'); }
 function menu() {
   S.state = 'menu'; S.p = null; S.L = null; S.keepScore = false;
-  panel(`<span class="badge">VIRTUAL NINJA</span><h2>CHOOSE YOUR NINJA</h2>
+  panel(`<span class="badge">PLANET RUNNER</span><h2>CHOOSE YOUR ASTRONAUT</h2>
   <div class="cards">${CH.map((c, i) => `<button class="card${i === selC ? ' sel' : ''}" data-c="${i}"><img src="${AS}characters/${c.id}/portrait.png" alt="${c.name}"><b>${c.name}</b><small>${c.role}</small></button>`).join('')}</div>
   <h3>MISSION</h3><div class="mis">${LV.map((l, i) => `<button class="m${i === selL ? ' sel' : ''}" data-l="${i}"><b>0${i + 1}</b> ${l.name}<small>${l.sub}</small></button>`).join('')}</div>
-  <button class="btn go" data-go>PLAY NOW ▸</button><p class="hint">Run. Jump. Think. Create.</p>`);
+  <button class="btn go" data-go>PLAY NOW ▸</button><p class="hint">Auto-run. Press SPACE to jump.</p>`);
 }
 function togglePause() {
   if (S.state === 'play') { S.state = 'pause'; panel(`<h2>PAUSED</h2><button class="btn go" data-resume>RESUME</button><button class="btn" data-quit>MAIN MENU</button>`); }
