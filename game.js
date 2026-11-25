@@ -52,9 +52,9 @@ const ready = Promise.all([
 const pose = (armBack = 0, elbowBack = 0, armFront = 0, elbowFront = 0, legBack = 0, kneeBack = 0, legFront = 0, kneeFront = 0, bob = 0, lean = 0, blade = -58, weapon = false, tilt = 0) =>
   ({ armBack, elbowBack, armFront, elbowFront, legBack, kneeBack, legFront, kneeFront, bob, lean, blade, weapon, tilt });
 const ANIM = {
-  idle: { fps: 4, loop: true, frames: [pose(-3, 8, 3, -8, -3, 4, 3, -4), pose(0, 9, 1, -8, -2, 4, 2, -4, -1), pose(3, 8, -3, -8, 0, 4, 0, -4), pose(0, 7, 0, -7, 2, 4, -2, -4, -1)] },
-  walk: { fps: 9, loop: true, frames: [pose(-18, 20, 18, -20, -24, 18, 24, -18), pose(-8, 10, 8, -10, -12, 12, 12, -12, -1), pose(18, -20, -18, 20, 24, -18, -24, 18), pose(8, -10, -8, 10, 12, -12, -12, 12, -1), pose(-18, 20, 18, -20, -24, 18, 24, -18), pose(-8, 10, 8, -10, -12, 12, 12, -12, -1)] },
-  run: { fps: 12, loop: true, frames: [pose(-32, 28, 38, -32, -42, 20, 48, -24, -1, 5), pose(-15, 16, 20, -18, -20, 12, 24, -16, 0, 5), pose(28, -28, -38, 32, 42, -20, -48, 24, -1, 5), pose(14, -16, -20, 18, 20, -12, -24, 16, 0, 5), pose(-32, 28, 38, -32, -42, 20, 48, -24, -1, 5), pose(-15, 16, 20, -18, -20, 12, 24, -16, 0, 5), pose(28, -28, -38, 32, 42, -20, -48, 24, -1, 5), pose(14, -16, -20, 18, 20, -12, -24, 16, 0, 5)] },
+  idle: { fps: 4, loop: true, frames: [pose(-46, 38, 46, -38, -8, 12, 8, -12), pose(-52, 44, 52, -44, -9, 14, 9, -14, -1), pose(-44, 36, 44, -36, -6, 10, 6, -10), pose(-50, 42, 50, -42, -8, 12, 8, -12, -1)] },
+  walk: { fps: 9, loop: true, frames: [pose(-46, 32, 42, -30, -28, 22, 28, -22), pose(-32, 20, 30, -20, -16, 14, 16, -14, -1), pose(42, -30, -46, 32, 28, -22, -28, 22), pose(30, -20, -32, 20, 16, -14, -16, 14, -1), pose(-46, 32, 42, -30, -28, 22, 28, -22), pose(-32, 20, 30, -20, -16, 14, 16, -14, -1)] },
+  run: { fps: 12, loop: true, frames: [pose(-54, 46, 58, -48, -48, 24, 52, -28, -1, 6), pose(-40, 34, 44, -36, -26, 16, 32, -20, 0, 5), pose(54, -46, -58, 48, 48, -24, -52, 28, -1, 6), pose(40, -34, -44, 36, 26, -16, -32, 20, 0, 5), pose(-54, 46, 58, -48, -48, 24, 52, -28, -1, 6), pose(-40, 34, 44, -36, -26, 16, 32, -20, 0, 5), pose(54, -46, -58, 48, 48, -24, -52, 28, -1, 6), pose(40, -34, -44, 36, 26, -16, -32, 20, 0, 5)] },
   jump: { fps: 9, loop: false, frames: [pose(-28, 16, 28, -16, -28, 18, 28, -18, -1), pose(-34, 18, 34, -18, -24, 24, 24, -24, -2), pose(-18, 10, 18, -10, -12, 22, 12, -22, -1)] },
   fall: { fps: 6, loop: true, frames: [pose(-34, 18, 36, -14, -32, 14, 32, -10, 1), pose(-25, 16, 28, -18, -24, 18, 24, -14), pose(-38, 12, 38, -12, -36, 12, 36, -8, -1)] },
   land: { fps: 12, loop: false, frames: [pose(-18, 22, 18, -22, -28, 44, 28, -44, 3), pose(-8, 12, 8, -12, -12, 26, 12, -26, 1), pose(0, 8, 0, -8, 0, 8, 0, -8)] },
@@ -73,7 +73,7 @@ function limbFrame(g, x, y, len, angle, width, trim, back = false) {
   g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath(); g.moveTo(x, y); g.lineTo(end.x, end.y);
   g.strokeStyle = '#050811'; g.lineWidth = width + 4; g.stroke();
   g.beginPath(); g.moveTo(x, y); g.lineTo(end.x, end.y); g.strokeStyle = back ? '#252c38' : '#151e2a'; g.lineWidth = width; g.stroke();
-  g.beginPath(); g.moveTo(x + 1, y); g.lineTo(end.x + 1, end.y); g.strokeStyle = 'rgba(174,205,220,.28)'; g.lineWidth = Math.max(1.5, width * .18); g.stroke();
+  g.beginPath(); g.moveTo(x + 1, y); g.lineTo(end.x + 1, end.y); g.strokeStyle = 'rgba(174,205,220,.48)'; g.lineWidth = Math.max(1.8, width * .22); g.stroke();
   const cuff = { x: x + (end.x - x) * .76, y: y + (end.y - y) * .76 };
   g.fillStyle = trim; g.beginPath(); g.arc(cuff.x, cuff.y, Math.max(2, width * .17), 0, Math.PI * 2); g.fill();
   return end;
@@ -86,24 +86,24 @@ function bakeNinjaFrame(ch, src, q) {
   g.lineCap = 'round'; g.strokeStyle = '#090d17'; g.lineWidth = 7; g.beginPath(); g.moveTo(66, 72); g.lineTo(80, 39); g.stroke();
   g.strokeStyle = '#697887'; g.lineWidth = 2; g.beginPath(); g.moveTo(67, 70); g.lineTo(79, 42); g.stroke();
   g.fillStyle = '#c43c50'; g.beginPath(); g.moveTo(43, 48); g.quadraticCurveTo(28, 39, 27, 28); g.quadraticCurveTo(40, 39, 46, 38); g.fill();
-  let a = limbFrame(g, 42, 91, 18, q.legBack, 13, trim, true);
-  let f = limbFrame(g, a.x, a.y, 17, q.legBack + q.kneeBack, 11, trim, true);
-  g.fillStyle = '#080c14'; g.beginPath(); g.ellipse(f.x - 4, f.y + 5, 9, 5, -.12, 0, Math.PI * 2); g.fill();
-  a = limbFrame(g, 54, 91, 18, q.legFront, 13, trim, false);
-  f = limbFrame(g, a.x, a.y, 17, q.legFront + q.kneeFront, 11, trim, false);
-  g.fillStyle = '#080c14'; g.beginPath(); g.ellipse(f.x + 4, f.y + 5, 9, 5, .12, 0, Math.PI * 2); g.fill();
-  const elbowBack = limbFrame(g, 33, 55, 17, q.armBack, 11, trim, true);
-  limbFrame(g, elbowBack.x, elbowBack.y, 15, q.armBack + q.elbowBack, 9, trim, true);
+  let a = limbFrame(g, 39, 91, 21, q.legBack, 15, trim, true);
+  let f = limbFrame(g, a.x, a.y, 19, q.legBack + q.kneeBack, 13, trim, true);
+  g.fillStyle = '#080c14'; g.beginPath(); g.ellipse(f.x - 5, f.y + 5, 10, 6, -.12, 0, Math.PI * 2); g.fill();
+  a = limbFrame(g, 57, 91, 21, q.legFront, 15, trim, false);
+  f = limbFrame(g, a.x, a.y, 19, q.legFront + q.kneeFront, 13, trim, false);
+  g.fillStyle = '#080c14'; g.beginPath(); g.ellipse(f.x + 5, f.y + 5, 10, 6, .12, 0, Math.PI * 2); g.fill();
+  const elbowBack = limbFrame(g, 30, 55, 19, q.armBack, 13, trim, true);
+  limbFrame(g, elbowBack.x, elbowBack.y, 17, q.armBack + q.elbowBack, 11, trim, true);
   const body = g.createLinearGradient(34, 48, 65, 96); body.addColorStop(0, '#273241'); body.addColorStop(.48, '#111a27'); body.addColorStop(1, '#080c15');
-  g.beginPath(); g.moveTo(37, 48); g.lineTo(59, 48); g.lineTo(67, 58); g.lineTo(63, 91); g.lineTo(57, 98); g.lineTo(37, 95); g.lineTo(30, 60); g.closePath();
+  g.beginPath(); g.moveTo(35, 47); g.lineTo(61, 47); g.lineTo(70, 58); g.lineTo(66, 92); g.lineTo(59, 99); g.lineTo(35, 96); g.lineTo(26, 59); g.closePath();
   g.fillStyle = body; g.fill(); g.strokeStyle = '#526073'; g.lineWidth = 2; g.stroke();
-  g.strokeStyle = 'rgba(188,206,220,.48)'; g.lineWidth = 2; g.beginPath(); g.moveTo(39, 54); g.lineTo(52, 65); g.lineTo(60, 56); g.stroke();
-  g.fillStyle = trim; g.globalAlpha = .9; g.fillRect(35, 78, 28, 4); g.globalAlpha = 1;
-  g.fillStyle = '#0a0e17'; g.fillRect(37, 84, 25, 6); g.fillStyle = '#d8b86e'; g.fillRect(47, 83, 7, 8);
-  const elbowFront = limbFrame(g, 62, 56, 17, q.armFront, 12, trim, false);
-  const hand = limbFrame(g, elbowFront.x, elbowFront.y, 15, q.armFront + q.elbowFront, 10, trim, false);
+  g.strokeStyle = 'rgba(188,206,220,.6)'; g.lineWidth = 2; g.beginPath(); g.moveTo(35, 54); g.lineTo(51, 66); g.lineTo(63, 55); g.stroke();
+  g.fillStyle = trim; g.globalAlpha = .95; g.fillRect(31, 78, 36, 5); g.globalAlpha = 1;
+  g.fillStyle = '#0a0e17'; g.fillRect(34, 85, 31, 7); g.fillStyle = '#d8b86e'; g.fillRect(47, 84, 8, 9);
+  const elbowFront = limbFrame(g, 66, 55, 19, q.armFront, 14, trim, false);
+  const hand = limbFrame(g, elbowFront.x, elbowFront.y, 17, q.armFront + q.elbowFront, 11, trim, false);
   g.fillStyle = '#111723'; g.beginPath(); g.arc(hand.x, hand.y, 5.5, 0, Math.PI * 2); g.fill();
-  if (src) { g.save(); g.beginPath(); g.ellipse(48, 29, 21, 24, 0, 0, Math.PI * 2); g.clip(); g.drawImage(src, 38, 0, 132, 132, 27, 4, 42, 46); g.restore(); }
+  if (src) { g.save(); g.beginPath(); g.ellipse(48, 29, 23, 25, 0, 0, Math.PI * 2); g.clip(); g.drawImage(src, 38, 0, 132, 132, 25, 2, 46, 50); g.restore(); }
   if (q.weapon) {
     const ang = q.blade * Math.PI / 180, tip = { x: hand.x + Math.cos(ang) * 43, y: hand.y + Math.sin(ang) * 43 };
     g.save(); g.lineCap = 'round'; g.shadowColor = trim; g.shadowBlur = 10; g.strokeStyle = trim; g.lineWidth = 5; g.beginPath(); g.moveTo(hand.x, hand.y); g.lineTo(tip.x, tip.y); g.stroke();
@@ -430,9 +430,9 @@ function drawPlayer() {
   const elapsed = p.animEvent === state ? p.animAge : p.t;
   const idx = cfg.loop ? Math.floor(elapsed * cfg.fps) % frames.length : Math.min(frames.length - 1, Math.floor(elapsed * cfg.fps));
   const frame = frames[idx], fx = p.x + p.w / 2, fy = p.y + p.h + 3;
-  if (p.dash > 0) for (let i = 1; i < 4; i++) { cx.save(); cx.globalAlpha = .2 / i; cx.translate(fx - p.face * i * 24, fy); cx.scale(p.face, 1); cx.filter = 'hue-rotate(60deg) brightness(1.6)'; cx.drawImage(frame, -42, -116, 84, 112); cx.restore(); }
+  if (p.dash > 0) for (let i = 1; i < 4; i++) { cx.save(); cx.globalAlpha = .2 / i; cx.translate(fx - p.face * i * 24, fy); cx.scale(p.face, 1); cx.filter = 'hue-rotate(60deg) brightness(1.6)'; cx.drawImage(frame, -48, -122, 96, 120); cx.restore(); }
   cx.save(); if (p.inv > 0 && !p.ko && Math.floor(p.t * 20) % 2) cx.globalAlpha = .45;
-  cx.translate(fx, fy); cx.scale(p.face, 1); cx.drawImage(frame, -42, -116, 84, 112); cx.restore();
+  cx.translate(fx, fy); cx.scale(p.face, 1); cx.drawImage(frame, -48, -122, 96, 120); cx.restore();
   if (p.atk > 0) { const k = 1 - p.atk / .22; cx.save(); cx.translate(fx + p.face * 14, p.y + 34); cx.strokeStyle = COL.green; cx.shadowColor = COL.green; cx.shadowBlur = 18; cx.lineWidth = 7; cx.lineCap = 'round'; cx.beginPath();
     if (p.face > 0) cx.arc(0, 0, 58, -1.1 + k * .6, -1.1 + k * 2.2); else cx.arc(0, 0, 58, Math.PI + 1.1 - k * 2.2, Math.PI + 1.1 - k * .6); cx.stroke(); cx.restore(); }
   if (p.spin > 0) { cx.save(); cx.translate(fx, p.y + 36); cx.strokeStyle = COL.purple; cx.shadowColor = COL.purple; cx.shadowBlur = 20; cx.lineWidth = 6; cx.globalAlpha = .9; const r = 70 + 40 * (1 - p.spin / .5);
